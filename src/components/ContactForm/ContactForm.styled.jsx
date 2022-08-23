@@ -32,6 +32,9 @@ export const Button = styled.button`
   :focus {
     background: #43a047;
   }
+  :disabled {
+    background: #81ca85;
+  }
 `;
 
 export const InputError = styled(ErrorMessage)`
