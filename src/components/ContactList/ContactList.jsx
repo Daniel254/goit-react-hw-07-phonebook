@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Notification from 'components/Notification';
 import { DeleteBtn, List } from './ContactList.styled';
 
-import { removeContactOperation } from 'redux/contact/contactOperations';
+import { useEffect } from 'react';
+import { getAllContacts, removeContact } from 'redux/contact/contactOperations';
 import { getContacts, getContactsFilter } from 'redux/cotacts';
 import sanitizeString from 'utils/sanitizeString';
 
@@ -17,16 +18,21 @@ function ContactList() {
   );
 
   const deleteContactHandler = id => {
-    dispatch(removeContactOperation(id));
+    dispatch(removeContact(id));
   };
+
+  useEffect(() => {
+    dispatch(getAllContacts());
+  }, [dispatch]);
 
   return (
     <>
       {filteredContactList.length > 0 ? (
         <List>
-          {filteredContactList.map(({ id, name, number }) => (
+          {filteredContactList.reverse().map(({ id, name, number }) => (
             <li key={id}>
-              {name}: {number}
+              {name}: <br />
+              {number}
               <DeleteBtn onClick={() => deleteContactHandler(id)}>
                 Delete
               </DeleteBtn>

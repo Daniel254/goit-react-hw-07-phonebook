@@ -5,14 +5,15 @@ import * as yup from 'yup';
 import Section from 'components/Section';
 import { Button, Input, InputError, LabelName } from './ContactForm.styled';
 
-import { getContacts } from 'redux/cotacts';
+import { getContacts, getLoadingStatus } from 'redux/cotacts';
 
-import { addContactsOperation } from 'redux/contact/contactOperations';
+import { addContact } from 'redux/contact/contactOperations';
 import sanitizeString from 'utils/sanitizeString';
 
 function ContactForm() {
   const dispatch = useDispatch();
   const contactList = useSelector(getContacts);
+  const isSubmitting = useSelector(getLoadingStatus);
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -45,9 +46,9 @@ function ContactForm() {
         throw new Error(`${values.name} is already in contacts`);
       }
       dispatch(
-        addContactsOperation({
+        addContact({
           name: values.name,
-          phone: values.number,
+          number: values.number,
         })
       );
       formik.resetForm();
@@ -79,7 +80,9 @@ function ContactForm() {
           </LabelName>
           <InputError name="number" component="p" />
 
-          <Button type="submit">Add contact</Button>
+          <Button type="submit" disabled={isSubmitting ? true : false}>
+            Add contact
+          </Button>
         </Form>
       </Formik>
     </Section>

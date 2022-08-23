@@ -1,33 +1,39 @@
-import { createContactApi, removeContactApi } from 'services/mock-api';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  addContactError,
-  addContactRequest,
-  addContactSuccess,
-  removeContactError,
-  removeContactRequest,
-  removeContactSuccess,
-} from './contactActions';
+  createContactApi,
+  getAllContactsApi,
+  removeContactApi,
+} from 'services/mock-api';
 
-export const addContactsOperation = contact => (dispatch, getState) => {
-  dispatch(addContactRequest());
-  createContactApi(contact)
-    .then(newContact => {
-      dispatch(addContactSuccess(newContact));
-    })
-    .catch(({ message }) => dispatch(addContactError(message)));
-};
+export const removeContact = createAsyncThunk(
+  'contacts/remove',
+  async (id, thunkApi) => {
+    try {
+      return await removeContactApi(id);
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
 
-export const removeContactOperation = id => dispatch => {
-  dispatch(removeContactRequest());
-  removeContactApi(id)
-    .then(removedId => {
-      dispatch(removeContactSuccess({ id }));
-    })
-    .catch(({ message }) => {
-      dispatch(removeContactError(message));
-    });
-};
+export const getAllContacts = createAsyncThunk(
+  'contacts/getAll',
+  async (_, thunkApi) => {
+    try {
+      return await getAllContactsApi();
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
 
-// export const getContacts = createAsyncThunk('contacts/getAll', async () =>{
-
-// });
+export const addContact = createAsyncThunk(
+  'contacts/add',
+  async (contact, thunkApi) => {
+    try {
+      return await createContactApi(contact);
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
