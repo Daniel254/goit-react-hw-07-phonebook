@@ -1,12 +1,13 @@
 import { Form, Formik } from 'formik';
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import Section from 'components/Section';
 import { Button, Input, InputError, LabelName } from './ContactForm.styled';
 
-import { addContacts, getContacts } from 'redux/cotacts';
+import { getContacts } from 'redux/cotacts';
+
+import { addContactsOperation } from 'redux/contact/contactOperations';
 import sanitizeString from 'utils/sanitizeString';
 
 function ContactForm() {
@@ -44,14 +45,9 @@ function ContactForm() {
         throw new Error(`${values.name} is already in contacts`);
       }
       dispatch(
-        addContacts({
-          contacts: [
-            {
-              id: nanoid(),
-              name: values.name,
-              number: values.number,
-            },
-          ],
+        addContactsOperation({
+          name: values.name,
+          phone: values.number,
         })
       );
       formik.resetForm();
