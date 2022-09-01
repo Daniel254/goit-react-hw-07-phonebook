@@ -1,42 +1,26 @@
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import Notification from 'components/Notification';
-import { DeleteBtn, List } from './ContactList.styled';
+import Notification from 'UI/Section/Notification';
+import { List } from './ContactList.styled';
 
-import { useEffect } from 'react';
-import { getAllContacts, removeContact } from 'redux/contact/contactOperations';
-import { getContacts, getContactsFilter } from 'redux/cotacts';
+import { getContacts, getContactsFilter } from 'redux/contacts';
 import sanitizeString from 'utils/sanitizeString';
+import ContactListItem from './ContactListItem';
 
 function ContactList() {
-  const dispatch = useDispatch();
   const contactList = useSelector(getContacts);
   const filter = useSelector(getContactsFilter);
   const filteredContactList = contactList.filter(item =>
     sanitizeString(item.name).includes(filter)
   );
 
-  const deleteContactHandler = id => {
-    dispatch(removeContact(id));
-  };
-
-  useEffect(() => {
-    dispatch(getAllContacts());
-  }, [dispatch]);
-
   return (
     <>
       {filteredContactList.length > 0 ? (
         <List>
-          {filteredContactList.reverse().map(({ id, name, number }) => (
-            <li key={id}>
-              {name}: <br />
-              {number}
-              <DeleteBtn onClick={() => deleteContactHandler(id)}>
-                Delete
-              </DeleteBtn>
-            </li>
+          {filteredContactList.reverse().map(contact => (
+            <ContactListItem key={contact.id} {...contact} />
           ))}
         </List>
       ) : contactList.length === 0 ? (

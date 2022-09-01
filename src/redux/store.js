@@ -9,7 +9,7 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 
-import contacts from './cotacts';
+import contacts from './contacts';
 
 const store = configureStore({
   reducer: {

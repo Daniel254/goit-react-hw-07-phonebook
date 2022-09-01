@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from './SearchContact.styled';
 
-import { getContactsFilter, setContactFilter } from 'redux/cotacts';
+import { getContactsFilter, setContactFilter } from 'redux/contacts';
 import sanitizeString from 'utils/sanitizeString';
 
 function SearchContact() {

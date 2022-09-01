@@ -34,6 +34,9 @@ export const Button = styled.button`
   }
   :disabled {
     background: #81ca85;
+    :hover {
+      cursor: default;
+    }
   }
 `;
 

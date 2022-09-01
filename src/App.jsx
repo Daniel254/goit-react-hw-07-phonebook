@@ -1,13 +1,24 @@
-import Box from 'components/Box';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import { getAllContacts } from 'redux/contacts';
+
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
-import Container from 'components/Container';
 import SearchContact from 'components/SearchContact';
-import Section from 'components/Section';
+import Box from 'UI/Box';
+import Container from 'UI/Container';
+import Section from 'UI/Section';
 
+import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from 'styles/GlobalStyle';
 
 export function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllContacts());
+  }, [dispatch]);
   return (
     <>
       <GlobalStyle />
@@ -22,6 +33,7 @@ export function App() {
           <ContactList />
         </Section>
       </Container>
+      <ToastContainer position="top-center" hideProgressBar={true} />
     </>
   );
 }

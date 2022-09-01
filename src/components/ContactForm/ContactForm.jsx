@@ -2,18 +2,17 @@ import { Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import Section from 'components/Section';
+import Section from 'UI/Section';
 import { Button, Input, InputError, LabelName } from './ContactForm.styled';
 
-import { getContacts, getLoadingStatus } from 'redux/cotacts';
+import { getContacts } from 'redux/contacts';
 
-import { addContact } from 'redux/contact/contactOperations';
+import { addContact } from 'redux/contacts';
 import sanitizeString from 'utils/sanitizeString';
 
 function ContactForm() {
   const dispatch = useDispatch();
   const contactList = useSelector(getContacts);
-  const isSubmitting = useSelector(getLoadingStatus);
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -22,7 +21,7 @@ function ContactForm() {
         message:
           "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan",
       }),
-    number: yup
+    phone: yup
       .string()
       .required()
       .matches(
@@ -45,12 +44,7 @@ function ContactForm() {
       if (checkExistingContactName(values)) {
         throw new Error(`${values.name} is already in contacts`);
       }
-      dispatch(
-        addContact({
-          name: values.name,
-          number: values.number,
-        })
-      );
+      dispatch(addContact(values));
       formik.resetForm();
     } catch (error) {
       alert(error);
@@ -62,28 +56,30 @@ function ContactForm() {
       <Formik
         initialValues={{
           name: '',
-          number: '',
+          phone: '',
         }}
         onSubmit={submitHandler}
         validationSchema={schema}
       >
-        <Form autoComplete="off">
-          <LabelName>
-            Name
-            <Input name="name" type="text" />
-          </LabelName>
-          <InputError name="name" component="p" />
+        {({ isSubmitting }) => (
+          <Form autoComplete="off">
+            <LabelName>
+              Name
+              <Input name="name" type="text" />
+            </LabelName>
+            <InputError name="name" component="p" />
 
-          <LabelName>
-            Number
-            <Input name="number" type="tel" />
-          </LabelName>
-          <InputError name="number" component="p" />
+            <LabelName>
+              Number
+              <Input name="phone" type="tel" />
+            </LabelName>
+            <InputError name="phone" component="p" />
 
-          <Button type="submit" disabled={isSubmitting ? true : false}>
-            Add contact
-          </Button>
-        </Form>
+            <Button type="submit" disabled={isSubmitting}>
+              Add contact
+            </Button>
+          </Form>
+        )}
       </Formik>
     </Section>
   );
