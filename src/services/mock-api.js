@@ -11,11 +11,11 @@ export const getAllContactsApi = async () => {
 };
 
 export const createContactApi = async contact => {
-  await instance.post('/contacts', contact);
-  return await getAllContactsApi();
+  const response = await instance.post('/contacts', contact);
+  return response.data;
 };
 
 export const removeContactApi = async id => {
-  await instance.delete(`/contacts/${id}`);
-  return await getAllContactsApi();
+  const response = await instance.delete(`/contacts/${id}`);
+  return response.data;
 };

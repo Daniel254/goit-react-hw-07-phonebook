@@ -6,9 +6,9 @@ import { getAllContacts } from 'redux/contacts';
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
 import SearchContact from 'components/SearchContact';
-import Box from 'UI/Box';
-import Container from 'UI/Container';
-import Section from 'UI/Section';
+import Box from 'components/ui/Box';
+import Container from 'components/ui/Container';
+import Section from 'components/ui/Section';
 
 import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyle from 'styles/GlobalStyle';

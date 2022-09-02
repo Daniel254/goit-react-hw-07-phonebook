@@ -2,11 +2,12 @@ import { Form, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import Section from 'UI/Section';
+import Section from 'components/ui/Section';
 import { Button, Input, InputError, LabelName } from './ContactForm.styled';
 
 import { getContacts } from 'redux/contacts';
 
+import { toast } from 'react-toastify';
 import { addContact } from 'redux/contacts';
 import sanitizeString from 'utils/sanitizeString';
 
@@ -47,7 +48,7 @@ function ContactForm() {
       dispatch(addContact(values));
       formik.resetForm();
     } catch (error) {
-      alert(error);
+      toast(error.message, { type: 'error' });
     }
   };
 
@@ -61,25 +62,21 @@ function ContactForm() {
         onSubmit={submitHandler}
         validationSchema={schema}
       >
-        {({ isSubmitting }) => (
-          <Form autoComplete="off">
-            <LabelName>
-              Name
-              <Input name="name" type="text" />
-            </LabelName>
-            <InputError name="name" component="p" />
+        <Form autoComplete="off">
+          <LabelName>
+            Name
+            <Input name="name" type="text" />
+          </LabelName>
+          <InputError name="name" component="p" />
 
-            <LabelName>
-              Number
-              <Input name="phone" type="tel" />
-            </LabelName>
-            <InputError name="phone" component="p" />
+          <LabelName>
+            Number
+            <Input name="phone" type="tel" />
+          </LabelName>
+          <InputError name="phone" component="p" />
 
-            <Button type="submit" disabled={isSubmitting}>
-              Add contact
-            </Button>
-          </Form>
-        )}
+          <Button type="submit">Add contact</Button>
+        </Form>
       </Formik>
     </Section>
   );
